@@ -1,5 +1,7 @@
 import Vue from "vue";
 import { Button, Layout, Icon, Drawer, Radio, Menu } from "ant-design-vue";
+import Authorized from "./components/Authorized";
+import Auth from "./directives/auth";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -13,6 +15,10 @@ Vue.use(Icon);
 Vue.use(Drawer);
 Vue.use(Radio);
 Vue.use(Menu);
+//注册指令
+Vue.use(Auth);
+//全局注册
+Vue.component("Authorized", Authorized);
 new Vue({
   router,
   store,

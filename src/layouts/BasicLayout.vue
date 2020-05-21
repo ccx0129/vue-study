@@ -14,7 +14,10 @@
       </a-layout-sider>
       <a-layout>
         <a-layout-header style="background: #fff; padding: 0">
+          <!--控制左侧菜单排版-->
+          <!--指令权限-->
           <a-icon
+            v-auth="['admin']"
             :type="collapsed ? 'menu-unfold' : 'menu-fold'"
             class="triger"
             @click="collapsed = !collapsed"
@@ -29,7 +32,10 @@
         </a-layout-footer>
       </a-layout>
     </a-layout>
-    <SettingDrawer />
+    <!--组件权限-->
+    <Authorized :authority="['admin']">
+      <SettingDrawer />
+    </Authorized>
   </div>
 </template>
 
