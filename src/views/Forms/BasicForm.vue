@@ -1,5 +1,5 @@
 <template>
-  <a-form :layout="formLayout">
+  <a-form :layout="formLayout" :form="form">
     <a-form-item
       label="Form Layout"
       :label-col="formItemLayout.labelCol"
@@ -24,20 +24,27 @@
       label="Field A"
       :label-col="formItemLayout.labelCol"
       :wrapper-col="formItemLayout.wrapperCol"
-      :validateStatus="fieldAStatus"
-      :help="fieldAHelp"
     >
-      <a-input v-model="fieldA" placeholder="input placeholder" />
+      <a-input
+        v-decorator="[
+          'fieldA',
+          {
+            initialValue: fieldA,
+            rules: [{ required: true, min: 6, message: '必须大于6个字符' }]
+          }
+        ]"
+        placeholder="input placeholder"
+      />
     </a-form-item>
     <a-form-item
       label="Field B"
       :label-col="formItemLayout.labelCol"
       :wrapper-col="formItemLayout.wrapperCol"
     >
-      <a-input placeholder="input placeholder" />
+      <a-input v-decorator="['fieldB']" placeholder="input placeholder" />
     </a-form-item>
     <a-form-item :wrapper-col="buttonItemLayout.wrapperCol">
-      <a-button type="primary">
+      <a-button type="primary" @click="handleSubmit">
         Submit
       </a-button>
     </a-form-item>
@@ -48,24 +55,19 @@
 export default {
   name: "BasicForm",
   data() {
+    this.form = this.$form.createForm(this);
     return {
       formLayout: "horizontal",
-      fieldA: "",
-      fieldAStatus: "",
-      fieldAHelp: ""
+      fieldA: "hell01",
+      fieldB: ""
     };
   },
-  watch: {
-    fieldA(val) {
-      if (val.length <= 5) {
-        this.fieldAStatus = "error";
-        this.fieldAHelp = "必须输入大于5个字符";
-      } else {
-        this.fieldAStatus = "";
-        this.fieldAHelp = "";
-      }
-    }
-  },
+  // mounted(){
+  //   //模拟动态改变字段的值
+  //   setTimeout(()=>{
+  //     this.form.setFieldsValue({fieldA:'xiaoxia'});
+  //   },3000)
+  // },
   computed: {
     formItemLayout() {
       const { formLayout } = this;
@@ -88,6 +90,15 @@ export default {
   methods: {
     handleFormLayoutChange(e) {
       this.formLayout = e.target.value;
+    },
+    handleSubmit() {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log(values);
+          //values的值赋值给this data里面的fieldA,fieldB
+          Object.assign(this, values);
+        }
+      });
     }
   }
 };
