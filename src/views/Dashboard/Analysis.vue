@@ -32,7 +32,8 @@ export default {
   methods: {
     getChartsData() {
       request({
-        url: "/employee/basic/dashboard/chart",
+        //url: "/employee/basic/dashboard/chart",
+        url: "/api/dashboard/chart",
         method: "get",
         params: { idVal: 123456 }
       }).then(response => {
